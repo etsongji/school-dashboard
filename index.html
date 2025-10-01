@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교생활 - 충주고등학교</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- CMS 데이터 로더 -->
+    <script src="js/cms-loader.js"></script>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="images/school-logo.png" alt="충주고등학교 로고" class="school-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <i class="fas fa-graduation-cap" style="display: none;"></i>
+                <span>충주고등학교</span>
+            </div>
+            
+            <!-- 네비게이션 -->
+            <nav class="nav">
+                <a href="#" class="nav-link active">홈</a>
+                <a href="calendar.html" class="nav-link">학사일정</a>
+                <a href="#" class="nav-link">급식정보</a>
+                <a href="notices.html" class="nav-link">공지사항</a>
+                <a href="rules.html" class="nav-link">교칙</a>
+                
+                <!-- 학년별 드롭다운 -->
+                <div class="dropdown">
+                    <button class="dropdown-btn">
+                        <span>학년별</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">1학년</a>
+                        <a href="#" class="dropdown-item">2학년</a>
+                        <a href="#" class="dropdown-item">3학년</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 공지사항 회전 배너 -->
+    <div class="notice-banner" id="noticeBanner">
+        <div class="notice-banner-content">
+            <i class="fas fa-bullhorn"></i>
+            <span id="noticeBannerText">공지사항을 불러오는 중...</span>
+        </div>
+        <button class="notice-close-btn" onclick="closeNoticeBanner()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- 메인 레이아웃 -->
+    <div class="main-layout">
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <!-- 2열 그리드 레이아웃 -->
+            <div class="content-grid">
+                <!-- 왼쪽 영역 -->
+                <div class="left-column">
+                    <!-- 오늘의 학교 일정 -->
+                    <section class="schedule-section">
+                        <div class="section-header">
+                            <h2>학교 일정</h2>
+                            <div class="date-navigation">
+                                <button class="date-nav-btn" onclick="changeScheduleDate(-1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div class="date-display" onclick="openDatePicker()">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span id="selectedDate">날짜 로딩중...</span>
+                                    <input type="date" id="datePicker" style="display: none;" onchange="selectDate(this.value)">
+                                </div>
+                                <button class="date-nav-btn" onclick="changeScheduleDate(1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                                <button class="refresh-btn" onclick="window.googleCalendar.loadCalendarData()">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-list">
+                            <div class="schedule-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>학사일정을 불러오는 중...</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 이주의 주요일정 -->
+                    <section class="weekly-schedule-section">
+                        <div class="section-header">
+                            <h2>이주의 주요일정</h2>
+                        </div>
+                        
+                        <div class="weekly-schedule-list">
+                            <div class="weekly-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>주요일정 로딩 중...</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- 오른쪽 영역 -->
+                <div class="right-column">
+                    <!-- 빠른 메뉴 -->
+                    <section class="quick-menu-section">
+                        <h3>빠른 메뉴</h3>
+                        <div class="quick-menu-grid">
+                            <button class="quick-menu-btn schedule-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                            <button class="quick-menu-btn meal-btn">
+                                <i class="fas fa-utensils"></i>
+                            </button>
+                            <button class="quick-menu-btn rules-btn">
+                                <i class="fas fa-book-open"></i>
+                            </button>
+                            <button class="quick-menu-btn notice-btn" onclick="location.href='notices.html'">
+                                <i class="fas fa-bullhorn"></i>
+                            </button>
+                        </div>
+                    </section>
+
+                    <!-- 오늘의 급식 -->
+                    <section class="meal-card-section">
+                        <h3>오늘의 급식</h3>
+                        
+                        <div class="meal-card">
+                            <!-- 급식 탭 -->
+                            <div class="meal-tabs-compact">
+                                <button id="compactBreakfastBtn" class="meal-tab-compact" data-meal-type="1">아침</button>
+                                <button id="compactLunchBtn" class="meal-tab-compact active" data-meal-type="2">점심</button>
+                                <button id="compactDinnerBtn" class="meal-tab-compact" data-meal-type="3">저녁</button>
+                            </div>
+                            
+                            <!-- 급식 메뉴 -->
+                            <div class="meal-content-compact">
+                                <div id="compactMealCard" class="compact-meal-display">
+                                    <div class="meal-loading-compact">급식 정보 로딩 중...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 충주고등학교. 모든 권리 보유.</p>
+            <p>문의: school@chungju.go.kr | 전화: 043-123-4567</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/meal.js"></script>
+    <script>
+        // 전역 변수
+        let compactMealCard;
+        let googleCalendar;
+
+        // DOM 로드 완료 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 현재 날짜 표시
+            updateTodayDate();
+            
+            // 드롭다운 기능 초기화
+            initDropdown();
+            
+            // 급식 탭 기능 초기화
+            initMealTabs();
+            
+            // 컴팩트 급식 카드 초기화
+            compactMealCard = new CompactMealCard();
+            
+            // Google Calendar 초기화
+            window.googleCalendar = new GoogleCalendarSchedule();
+        });
+
+        // 오늘 날짜 업데이트
+        function updateTodayDate() {
+            const today = new Date();
+            const options = { month: 'long', day: 'numeric', weekday: 'short' };
+            const dateString = today.toLocaleDateString('ko-KR', options);
+            document.getElementById('todayDate').textContent = dateString;
+        }
+
+        // 드롭다운 초기화
+        function initDropdown() {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownBtn = dropdown.querySelector('.dropdown-btn');
+            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+
+            dropdownBtn.addEventListener('click', function() {
+                dropdown.classList.toggle('active');
+            });
+
+            // 외부 클릭 시 드롭다운 닫기
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+
+        // 급식 탭 초기화
+        function initMealTabs() {
+            const mealTabs = document.querySelectorAll('.meal-tab');
+            
+            mealTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 모든 탭에서 active 제거
+                    mealTabs.forEach(t => t.classList.remove('active'));
+                    // 클릭된 탭에 active 추가
+                    this.classList.add('active');
+                    
+                    // 메뉴 표시/숨김
+                    const mealType = this.dataset.meal;
+                    document.querySelectorAll('.meal-menu-display').forEach(menu => {
+                        menu.style.display = 'none';
+                    });
+                    document.getElementById(mealType + 'Menu').style.display = 'block';
+                });
+            });
+        }
+
+        // Google Calendar 클래스
+        class GoogleCalendarSchedule {
+            constructor() {
+                this.icsUrl = 'https://calendar.google.com/calendar/ical/36ba3c711fc38c700924941125d4c03392c69e553db7e596977f241d65465dc6%40group.calendar.google.com/public/basic.ics';
+                this.events = [];
+                this.debugMode = false; // 디버그 모드 비활성화
+                this.selectedDate = new Date(); // 선택된 날짜
+                this.init();
+            }
+
+            init() {
+                this.updateSelectedDateDisplay();
+                this.loadCalendarData();
+            }
+
+            async loadCalendarData() {
+                console.log('🔄 캘린더 데이터 로딩 시작...');
+                try {
+                    const data = await this.fetchCalendarData();
+                    console.log('📥 ICS 데이터 수신:', data ? `${data.length}자` : 'null');
+                    
+                    if (!data || data.length === 0) {
+                        throw new Error('빈 ICS 데이터');
+                    }
+                    
+                    // ICS 데이터 일부 출력
+                    console.log('📄 ICS 데이터 미리보기:', data.substring(0, 500) + '...');
+                    
+                    this.events = this.parseICS(data);
+                    console.log('📅 파싱된 이벤트 수:', this.events.length);
+                    
+                    if (this.events.length > 0) {
+                        console.log('📋 첫 번째 이벤트:', this.events[0]);
+                        console.log('📋 모든 이벤트 제목:', this.events.map(e => e.summary));
+                    }
+                    
+                    this.updateScheduleDisplay();
+                    this.updateWeeklyScheduleDisplay();
+                } catch (error) {
+                    console.error('❌ Google Calendar 로딩 실패:', error);
+                    this.showCalendarError();
+                }
+            }
+
+            async fetchCalendarData() {
+                console.log('🌐 프록시 요청 시작...');
+                
+                // CORS 우회를 위한 프록시 사용
+                try {
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(this.icsUrl)}`;
+                    console.log('🔗 AllOrigins 시도:', proxyUrl);
+                    const response = await fetch(proxyUrl);
+                    console.log('📡 AllOrigins 응답:', response.status, response.statusText);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('📦 AllOrigins 데이터:', data);
+                        if (data.contents && data.contents.length > 0) {
+                            console.log('✅ AllOrigins 성공!');
+                            
+                            // base64 데이터인지 확인하고 디코딩
+                            let contents = data.contents;
+                            if (contents.startsWith('data:text/calendar') && contents.includes('base64,')) {
+                                console.log('🔓 Base64 데이터 디코딩 중...');
+                                const base64Data = contents.split('base64,')[1];
+                                
+                                // UTF-8 디코딩을 위해 바이트 배열로 변환 후 텍스트 디코더 사용
+                                const binaryString = atob(base64Data);
+                                const bytes = new Uint8Array(binaryString.length);
+                                for (let i = 0; i < binaryString.length; i++) {
+                                    bytes[i] = binaryString.charCodeAt(i);
+                                }
+                                contents = new TextDecoder('utf-8').decode(bytes);
+                                console.log('✅ UTF-8 디코딩 완료');
+                            }
+                            
+                            return contents;
+                        }
+                    }
+                } catch (error) {
+                    console.log('❌ AllOrigins 실패:', error.message);
+                }
+
+                // 다른 프록시 시도
+                try {
+                    const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(this.icsUrl)}`;
+                    console.log('🔗 CodeTabs 시도:', proxyUrl);
+                    const response = await fetch(proxyUrl);
+                    console.log('📡 CodeTabs 응답:', response.status, response.statusText);
+                    
+                    if (response.ok) {
+                        const text = await response.text();
+                        console.log('✅ CodeTabs 성공!');
+                        return text;
+                    }
+                } catch (error) {
+                    console.log('❌ CodeTabs 실패:', error.message);
+                }
+
+                // 직접 요청 시도 (CORS 에러 발생할 가능성 높음)
+                try {
+                    console.log('🔗 직접 요청 시도...');
+                    const response = await fetch(this.icsUrl);
+                    console.log('📡 직접 요청 응답:', response.status, response.statusText);
+                    
+                    if (response.ok) {
+                        const text = await response.text();
+                        console.log('✅ 직접 요청 성공!');
+                        return text;
+                    }
+                } catch (error) {
+                    console.log('❌ 직접 요청 실패:', error.message);
+                }
+
+                throw new Error('캘린더 데이터를 가져올 수 없습니다');
+            }
+
+            parseICS(icsData) {
+                const events = [];
+                const lines = icsData.split('\n');
+                let currentEvent = null;
+
+                for (let line of lines) {
+                    line = line.trim();
+
+                    if (line === 'BEGIN:VEVENT') {
+                        currentEvent = {};
+                    } else if (line === 'END:VEVENT' && currentEvent) {
+                        if (currentEvent.summary && currentEvent.dtstart) {
+                            events.push(currentEvent);
+                        }
+                        currentEvent = null;
+                    } else if (currentEvent) {
+                        if (line.startsWith('SUMMARY:')) {
+                            currentEvent.summary = line.substring(8);
+                        } else if (line.startsWith('DTSTART')) {
+                            const dateMatch = line.match(/DTSTART[^:]*:(\d{8}T?\d{0,6}Z?)/);
+                            if (dateMatch) {
+                                currentEvent.dtstart = this.parseDate(dateMatch[1]);
+                            }
+                        } else if (line.startsWith('DTEND')) {
+                            const dateMatch = line.match(/DTEND[^:]*:(\d{8}T?\d{0,6}Z?)/);
+                            if (dateMatch) {
+                                currentEvent.dtend = this.parseDate(dateMatch[1]);
+                            }
+                        } else if (line.startsWith('LOCATION:')) {
+                            currentEvent.location = line.substring(9);
+                        } else if (line.startsWith('DESCRIPTION:')) {
+                            currentEvent.description = line.substring(12);
+                        }
+                    }
+                }
+
+                return events.sort((a, b) => a.dtstart - b.dtstart);
+            }
+
+            parseDate(dateString) {
+                console.log('📅 날짜 파싱:', dateString);
+                // YYYYMMDD 또는 YYYYMMDDTHHMMSSZ 형식 파싱
+                if (dateString.length >= 8) {
+                    const year = parseInt(dateString.substring(0, 4));
+                    const month = parseInt(dateString.substring(4, 6)) - 1;
+                    const day = parseInt(dateString.substring(6, 8));
+                    
+                    let parsedDate;
+                    if (dateString.length > 8 && dateString.includes('T')) {
+                        const hour = parseInt(dateString.substring(9, 11)) || 0;
+                        const minute = parseInt(dateString.substring(11, 13)) || 0;
+                        parsedDate = new Date(year, month, day, hour, minute);
+                    } else {
+                        parsedDate = new Date(year, month, day);
+                    }
+                    
+                    console.log('🕒 파싱 결과:', parsedDate.toDateString());
+                    return parsedDate;
+                }
+                return new Date();
+            }
+
+            updateScheduleDisplay() {
+                const selectedDate = new Date(this.selectedDate);
+                selectedDate.setHours(0, 0, 0, 0);
+                console.log('📆 선택된 날짜:', selectedDate.toDateString());
+                
+                const selectedDateEvents = this.events.filter(event => {
+                    const eventDate = new Date(event.dtstart);
+                    eventDate.setHours(0, 0, 0, 0);
+                    const isSelectedDate = eventDate.getTime() === selectedDate.getTime();
+                    console.log('🔍 이벤트 체크:', event.summary, '날짜:', eventDate.toDateString(), '선택된 날짜인가?', isSelectedDate);
+                    return isSelectedDate;
+                });
+
+                console.log('🎯 선택된 날짜의 이벤트:', selectedDateEvents.length, '개');
+
+                const scheduleList = document.querySelector('.schedule-list');
+                if (!scheduleList) return;
+
+                if (selectedDateEvents.length === 0) {
+                    console.log('📝 선택된 날짜 일정이 없음');
+                    this.showNoSchedule();
+                    return;
+                }
+
+                const scheduleHTML = selectedDateEvents.map((event, index) => {
+                    const eventTime = event.dtstart.toLocaleTimeString('ko-KR', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    
+                    const icon = this.getEventIcon(event.summary);
+                    const grade = this.getEventGrade(event.summary);
+                    const location = event.location || '미정';
+
+                    return `
+                        <div class="schedule-card">
+                            <div class="schedule-icon">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="schedule-content">
+                                <h3>${event.summary}</h3>
+                                <div class="schedule-details">
+                                    <span class="location">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        ${location}
+                                    </span>
+                                    <span class="grade-badge ${grade.class}">${grade.text}</span>
+                                    <span class="time">${eventTime}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                scheduleList.innerHTML = scheduleHTML;
+            }
+
+            updateWeeklyScheduleDisplay() {
+                const today = new Date();
+                const nextWeek = new Date(today);
+                nextWeek.setDate(today.getDate() + 14);
+
+                const weeklyEvents = this.events.filter(event => {
+                    const eventDate = new Date(event.dtstart);
+                    return eventDate >= today && eventDate <= nextWeek;
+                }).slice(0, 4); // 최대 4개만
+
+                const weeklyList = document.querySelector('.weekly-schedule-list');
+                if (!weeklyList) return;
+
+                if (weeklyEvents.length === 0) {
+                    this.showNoWeeklySchedule();
+                    return;
+                }
+
+                const weeklyHTML = weeklyEvents.map(event => {
+                    const eventDate = event.dtstart.toLocaleDateString('ko-KR', { 
+                        month: 'numeric', 
+                        day: 'numeric',
+                        weekday: 'short'
+                    });
+
+                    return `
+                        <div class="weekly-schedule-item">
+                            <div class="week-date">${eventDate}</div>
+                            <div class="week-event">${event.summary}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                weeklyList.innerHTML = weeklyHTML;
+            }
+
+            getEventIcon(summary) {
+                const title = summary.toLowerCase();
+                if (title.includes('시험') || title.includes('고사')) return 'fa-clipboard-list';
+                if (title.includes('회의') || title.includes('모임')) return 'fa-users';
+                if (title.includes('상담') || title.includes('면담')) return 'fa-user-tie';
+                if (title.includes('행사') || title.includes('축제')) return 'fa-calendar-check';
+                if (title.includes('휴무') || title.includes('방학')) return 'fa-calendar-times';
+                return 'fa-calendar-alt';
+            }
+
+            getEventGrade(summary) {
+                const title = summary.toLowerCase();
+                // 여러 학년이 포함된 경우 체크
+                const hasGrade1 = title.includes('1학년') || title.includes('1,2') || title.includes('1, 2');
+                const hasGrade2 = title.includes('2학년') || title.includes('1,2') || title.includes('1, 2') || title.includes('2,3') || title.includes('2, 3');
+                const hasGrade3 = title.includes('3학년') || title.includes('2,3') || title.includes('2, 3');
+                
+                // 복수 학년인 경우
+                if ((hasGrade1 && hasGrade2 && hasGrade3) || title.includes('전학년') || title.includes('전체')) {
+                    return { class: 'all-grade', text: '전학년' };
+                } else if (hasGrade1 && hasGrade2) {
+                    return { class: 'grade-12', text: '1,2학년' };
+                } else if (hasGrade2 && hasGrade3) {
+                    return { class: 'grade-23', text: '2,3학년' };
+                } else if (hasGrade1) {
+                    return { class: 'grade-1', text: '1학년' };
+                } else if (hasGrade2) {
+                    return { class: 'grade-2', text: '2학년' };
+                } else if (hasGrade3) {
+                    return { class: 'grade-3', text: '3학년' };
+                } else {
+                    return { class: 'all-grade', text: '전학년' };
+                }
+            }
+
+
+
+            showNoSchedule() {
+                const scheduleList = document.querySelector('.schedule-list');
+                if (!scheduleList) return;
+
+                scheduleList.innerHTML = `
+                    <div class="no-schedule">
+                        <div class="no-schedule-icon">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="no-schedule-content">
+                            <h3>등록된 일정이 없습니다</h3>
+                            <p>오늘은 예정된 학교 일정이 없습니다.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showNoWeeklySchedule() {
+                const weeklyList = document.querySelector('.weekly-schedule-list');
+                if (!weeklyList) return;
+
+                weeklyList.innerHTML = `
+                    <div class="no-weekly-schedule">
+                        <div class="no-schedule-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="no-schedule-content">
+                            <h3>예정된 주요 일정이 없습니다</h3>
+                            <p>향후 2주간 등록된 일정이 없습니다.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showCalendarError() {
+                const scheduleList = document.querySelector('.schedule-list');
+                const weeklyList = document.querySelector('.weekly-schedule-list');
+                
+                const errorHTML = `
+                    <div class="calendar-error">
+                        <div class="no-schedule-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="no-schedule-content">
+                            <h3>일정을 불러올 수 없습니다</h3>
+                            <p>인터넷 연결을 확인하고 새로고침해 주세요.</p>
+                        </div>
+                    </div>
+                `;
+                
+                if (scheduleList) {
+                    scheduleList.innerHTML = errorHTML;
+                }
+                if (weeklyList) {
+                    weeklyList.innerHTML = errorHTML;
+                }
+            }
+
+            // 선택된 날짜 업데이트
+            updateSelectedDateDisplay() {
+                const dateSpan = document.getElementById('selectedDate');
+                if (dateSpan) {
+                    const options = { month: 'long', day: 'numeric', weekday: 'short' };
+                    const dateString = this.selectedDate.toLocaleDateString('ko-KR', options);
+                    dateSpan.textContent = dateString;
+                }
+            }
+
+            // 날짜 변경
+            changeDate(direction) {
+                const newDate = new Date(this.selectedDate);
+                newDate.setDate(newDate.getDate() + direction);
+                this.selectedDate = newDate;
+                this.updateSelectedDateDisplay();
+                this.updateScheduleDisplay();
+            }
+
+            // 특정 날짜로 설정
+            setDate(dateString) {
+                this.selectedDate = new Date(dateString);
+                this.updateSelectedDateDisplay();
+                this.updateScheduleDisplay();
+            }
+        }
+
+        // 컴팩트 급식 카드 클래스
+        class CompactMealCard {
+            constructor() {
+                this.apiKey = 'cc1b9c0a34804a628cc701f43a8398e1';
+                this.schoolCode = '8000078';
+                this.officeCode = 'M10';
+                this.baseURL = 'https://open.neis.go.kr/hub/mealServiceDietInfo';
+                this.currentDate = new Date();
+                this.currentMealType = '2'; // 기본값: 중식
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.loadMealData();
+            }
+            
+            setupEventListeners() {
+                // 조식 버튼
+                const breakfastBtn = document.getElementById('compactBreakfastBtn');
+                if (breakfastBtn) {
+                    breakfastBtn.addEventListener('click', () => {
+                        this.selectMealType('1');
+                    });
+                }
+                
+                // 중식 버튼
+                const lunchBtn = document.getElementById('compactLunchBtn');
+                if (lunchBtn) {
+                    lunchBtn.addEventListener('click', () => {
+                        this.selectMealType('2');
+                    });
+                }
+                
+                // 석식 버튼
+                const dinnerBtn = document.getElementById('compactDinnerBtn');
+                if (dinnerBtn) {
+                    dinnerBtn.addEventListener('click', () => {
+                        this.selectMealType('3');
+                    });
+                }
+            }
+            
+            selectMealType(mealType) {
+                this.currentMealType = mealType;
+                this.updateActiveButton();
+                this.loadMealData();
+            }
+            
+            updateActiveButton() {
+                // 모든 버튼에서 active 클래스 제거
+                document.querySelectorAll('.meal-tab-compact').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // 현재 선택된 타입의 버튼에 active 클래스 추가
+                const activeButton = document.querySelector(`[data-meal-type="${this.currentMealType}"]`);
+                if (activeButton && activeButton.classList.contains('meal-tab-compact')) {
+                    activeButton.classList.add('active');
+                }
+            }
+            
+            formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}${month}${day}`;
+            }
+            
+            async loadMealData() {
+                const container = document.getElementById('compactMealCard');
+                if (!container) return;
+                
+                container.innerHTML = '<div class="meal-loading-compact"><i class="fas fa-spinner fa-spin"></i> 로딩 중...</div>';
+                
+                try {
+                    const data = await this.fetchMealData();
+                    this.displayMealCard(data);
+                } catch (error) {
+                    this.showNoMealMessage();
+                }
+            }
+            
+            async fetchMealData() {
+                const dateStr = this.formatDate(this.currentDate);
+                const targetUrl = `${this.baseURL}?KEY=${this.apiKey}&Type=json&pIndex=1&pSize=100&ATPT_OFCDC_SC_CODE=${this.officeCode}&SD_SCHUL_CODE=${this.schoolCode}&MLSV_YMD=${dateStr}`;
+                
+                // 1. 직접 요청 시도
+                try {
+                    const response = await fetch(targetUrl, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.mealServiceDietInfo) {
+                            return data;
+                        }
+                    }
+                } catch (error) {
+                    console.log('직접 요청 실패:', error.message);
+                }
+                
+                // 2. AllOrigins 프록시 시도
+                try {
+                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+                    const response = await fetch(proxyUrl);
+                    
+                    if (response.ok) {
+                        const proxyData = await response.json();
+                        if (proxyData.contents) {
+                            const data = JSON.parse(proxyData.contents);
+                            if (data.mealServiceDietInfo) {
+                                return data;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('AllOrigins 프록시 실패:', error.message);
+                }
+                
+                throw new Error('모든 API 호출 방법이 실패했습니다');
+            }
+            
+            displayMealCard(data) {
+                const container = document.getElementById('compactMealCard');
+                
+                if (!data.mealServiceDietInfo) {
+                    this.showNoMealMessage();
+                    return;
+                }
+                
+                const meals = data.mealServiceDietInfo[1].row;
+                const targetMealName = this.getMealTypeName(this.currentMealType);
+                
+                const targetMeal = meals.find(meal => {
+                    const mealCode = String(meal.MMEAL_SC_NM);
+                    return mealCode === this.currentMealType || mealCode === targetMealName;
+                });
+                
+                if (!targetMeal) {
+                    this.showNoMealMessage();
+                    return;
+                }
+                
+                this.displayFoundMeal(targetMeal);
+            }
+            
+            displayFoundMeal(targetMeal) {
+                const container = document.getElementById('compactMealCard');
+                
+                const menuItems = targetMeal.DDISH_NM
+                    .replace(/<br\/>/g, '\n')
+                    .replace(/<[^>]*>/g, '')
+                    .split('\n')
+                    .filter(item => item.trim())
+                    .map(item => item.replace(/\*[\d.]+/g, '').trim()); // 알레르기 정보 제거
+                
+                const menuHTML = menuItems.slice(0, 4).map(item => 
+                    `<div class="meal-item-compact">${item}</div>`
+                ).join('');
+                
+                container.innerHTML = `
+                    <div class="compact-meal-menu">
+                        ${menuHTML}
+                        ${menuItems.length > 4 ? `<div class="meal-more-compact">+${menuItems.length - 4}개 더</div>` : ''}
+                    </div>
+                `;
+            }
+            
+            
+            showNoMealMessage() {
+                const container = document.getElementById('compactMealCard');
+                
+                container.innerHTML = `
+                    <div class="no-meal-compact">
+                        <div class="no-meal-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="no-meal-content">
+                            <h4>${this.getMealTypeName(this.currentMealType)} 정보 없음</h4>
+                            <p>오늘 ${this.getMealTypeName(this.currentMealType)} 정보가 등록되지 않았습니다.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getMealTypeName(code) {
+                const mealTypes = {
+                    '1': '조식',
+                    '2': '중식', 
+                    '3': '석식'
+                };
+                return mealTypes[code] || '중식';
+            }
+        }
+
+        // 전역 함수들 - HTML에서 호출됨
+        function changeScheduleDate(direction) {
+            if (window.googleCalendar) {
+                window.googleCalendar.changeDate(direction);
+            }
+        }
+
+        function openDatePicker() {
+            const datePicker = document.getElementById('datePicker');
+            if (datePicker) {
+                // 현재 선택된 날짜를 input value로 설정
+                const currentDate = window.googleCalendar ? window.googleCalendar.selectedDate : new Date();
+                datePicker.value = currentDate.toISOString().split('T')[0];
+                datePicker.click();
+            }
+        }
+
+        function selectDate(dateString) {
+            if (window.googleCalendar && dateString) {
+                window.googleCalendar.setDate(dateString);
+            }
+        }
+    </script>
+
+    <!-- Netlify Identity 초기화 -->
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

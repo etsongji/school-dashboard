@@ -1,0 +1,57 @@
+backend:
+  name: git-gateway
+  branch: main # Git 브랜치명
+
+# 로컬 개발시에만 사용 (배포시 자동 비활성화)
+local_backend: true
+
+# 미디어 파일 설정
+media_folder: "images/uploads" # 업로드된 이미지 저장 위치
+public_folder: "/images/uploads" # 웹에서 접근할 수 있는 경로
+
+# 콘텐츠 타입 정의
+collections:
+  # 공지사항 관리
+  - name: "notices"
+    label: "공지사항"
+    folder: "_notices"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "내용", name: "content", widget: "text" }
+      - { label: "우선순위", name: "priority", widget: "select", options: ["high", "medium", "low"], default: "medium" }
+      - { label: "작성자", name: "author", widget: "string", default: "관리자" }
+      - { label: "작성일", name: "date", widget: "datetime", default: "" }
+      - { label: "노출 시작일", name: "displayStartDate", widget: "date" }
+      - { label: "노출 종료일", name: "displayEndDate", widget: "date" }
+      - { label: "첨부파일", name: "attachment", widget: "file", required: false }
+
+  # 학교 정보 관리
+  - name: "school-info"
+    label: "학교 정보"
+    files:
+      - label: "기본 정보"
+        name: "basic-info"
+        file: "_data/school-info.yml"
+        fields:
+          - { label: "학교명", name: "school_name", widget: "string" }
+          - { label: "주소", name: "address", widget: "string" }
+          - { label: "전화번호", name: "phone", widget: "string" }
+          - { label: "팩스", name: "fax", widget: "string" }
+          - { label: "홈페이지", name: "website", widget: "string" }
+          - { label: "교장명", name: "principal", widget: "string" }
+
+  # 급식 정보 (수동 입력용)
+  - name: "meals"
+    label: "급식 정보"
+    folder: "_meals"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}"
+    fields:
+      - { label: "날짜", name: "date", widget: "date" }
+      - { label: "조식", name: "breakfast", widget: "list", required: false }
+      - { label: "중식", name: "lunch", widget: "list" }
+      - { label: "석식", name: "dinner", widget: "list", required: false }
+      - { label: "칼로리", name: "calories", widget: "string", required: false }
+      - { label: "특이사항", name: "notes", widget: "text", required: false }

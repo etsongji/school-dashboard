@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교 교칙 - 우리학교</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/rules.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>우리학교 교칙</span>
+            </div>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                대시보드로 돌아가기
+            </a>
+        </div>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <main class="main-container">
+        <!-- 목차 사이드바 -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h3><i class="fas fa-list"></i> 목차</h3>
+                <nav class="toc">
+                    <a href="#general" class="toc-item active" data-section="general">
+                        <i class="fas fa-info-circle"></i>
+                        일반 사항
+                    </a>
+                    <a href="#uniform" class="toc-item" data-section="uniform">
+                        <i class="fas fa-tshirt"></i>
+                        복장 규정
+                    </a>
+                    <a href="#attendance" class="toc-item" data-section="attendance">
+                        <i class="fas fa-clock"></i>
+                        출결 관리
+                    </a>
+                    <a href="#conduct" class="toc-item" data-section="conduct">
+                        <i class="fas fa-handshake"></i>
+                        생활 지도
+                    </a>
+                    <a href="#facilities" class="toc-item" data-section="facilities">
+                        <i class="fas fa-building"></i>
+                        시설 이용
+                    </a>
+                    <a href="#academic" class="toc-item" data-section="academic">
+                        <i class="fas fa-book"></i>
+                        학습 활동
+                    </a>
+                    <a href="#disciplinary" class="toc-item" data-section="disciplinary">
+                        <i class="fas fa-gavel"></i>
+                        징계 규정
+                    </a>
+                </nav>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="교칙 검색...">
+                    <button onclick="searchRules()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 교칙 내용 -->
+        <section class="rules-content">
+            <!-- 일반 사항 -->
+            <div class="rule-section" id="general">
+                <h2><i class="fas fa-info-circle"></i> 일반 사항</h2>
+                
+                <div class="rule-card">
+                    <h3>제1조 (목적)</h3>
+                    <p>본 교칙은 학생들의 건전한 학교생활과 면학 분위기 조성을 통하여 민주시민으로서의 자질을 함양하고 올바른 인성을 기를 수 있도록 함을 목적으로 한다.</p>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제2조 (적용 범위)</h3>
+                    <p>본 교칙은 본교에 재학하는 모든 학생에게 적용되며, 교내외 활동 전반에 걸쳐 효력을 갖는다.</p>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제3조 (기본 정신)</h3>
+                    <ul>
+                        <li>상호 존중과 배려의 정신</li>
+                        <li>자율과 책임의 조화</li>
+                        <li>창의성과 도전 정신 함양</li>
+                        <li>공동체 의식과 시민 정신</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 복장 규정 -->
+            <div class="rule-section" id="uniform">
+                <h2><i class="fas fa-tshirt"></i> 복장 규정</h2>
+                
+                <div class="rule-card">
+                    <h3>제4조 (교복 착용)</h3>
+                    <div class="rule-grid">
+                        <div class="rule-item">
+                            <h4>동복 (11월~3월)</h4>
+                            <ul>
+                                <li>남학생: 검정 재킷, 회색 바지, 흰색 와이셔츠</li>
+                                <li>여학생: 검정 재킷, 회색 치마/바지, 흰색 블라우스</li>
+                                <li>학교 지정 넥타이/리본 착용</li>
+                            </ul>
+                        </div>
+                        <div class="rule-item">
+                            <h4>하복 (4월~10월)</h4>
+                            <ul>
+                                <li>남학생: 흰색 와이셔츠, 회색 바지</li>
+                                <li>여학생: 흰색 블라우스, 회색 치마/바지</li>
+                                <li>체육복 착용 가능 (체육 수업 및 방과후 활동)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rule-card warning">
+                    <h3>제5조 (복장 착용 시 주의사항)</h3>
+                    <ul>
+                        <li>교복은 항상 단정하게 착용할 것</li>
+                        <li>명찰은 왼쪽 가슴에 정확히 부착</li>
+                        <li>신발은 검정 또는 갈색 운동화/구두</li>
+                        <li>과도한 장신구 착용 금지</li>
+                        <li>염색, 파마 등 인위적인 헤어스타일 금지</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 출결 관리 -->
+            <div class="rule-section" id="attendance">
+                <h2><i class="fas fa-clock"></i> 출결 관리</h2>
+                
+                <div class="rule-card">
+                    <h3>제6조 (등교 시간)</h3>
+                    <div class="time-table">
+                        <div class="time-item">
+                            <span class="time">08:00</span>
+                            <span class="desc">등교 완료</span>
+                        </div>
+                        <div class="time-item">
+                            <span class="time">08:10</span>
+                            <span class="desc">조회 시작</span>
+                        </div>
+                        <div class="time-item">
+                            <span class="time">08:20</span>
+                            <span class="desc">1교시 시작</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제7조 (결석 및 조퇴)</h3>
+                    <ul>
+                        <li><strong>사전 신고:</strong> 결석 시 담임교사에게 사전 연락</li>
+                        <li><strong>증빙 서류:</strong> 병결의 경우 의료진 진단서 제출</li>
+                        <li><strong>조퇴 절차:</strong> 담임교사 허가 후 학생부 신고</li>
+                        <li><strong>무단 결석:</strong> 3회 이상 시 학부모 면담</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 생활 지도 -->
+            <div class="rule-section" id="conduct">
+                <h2><i class="fas fa-handshake"></i> 생활 지도</h2>
+                
+                <div class="rule-card">
+                    <h3>제8조 (교내 생활)</h3>
+                    <div class="conduct-grid">
+                        <div class="conduct-do">
+                            <h4><i class="fas fa-check-circle"></i> 권장 사항</h4>
+                            <ul>
+                                <li>예의 바른 언어 사용</li>
+                                <li>선후배 간 상호 존중</li>
+                                <li>교실 및 복도에서 정숙</li>
+                                <li>친구들과 협력적 관계 유지</li>
+                                <li>환경 정리 정돈</li>
+                            </ul>
+                        </div>
+                        <div class="conduct-dont">
+                            <h4><i class="fas fa-times-circle"></i> 금지 사항</h4>
+                            <ul>
+                                <li>폭력적 언행 및 행동</li>
+                                <li>흡연, 음주, 도박</li>
+                                <li>교내 취식 (지정 장소 외)</li>
+                                <li>휴대폰 수업 중 사용</li>
+                                <li>타인의 물건 무단 사용</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제9조 (휴대폰 사용 규정)</h3>
+                    <div class="phone-rules">
+                        <div class="phone-allowed">
+                            <h4>사용 가능 시간</h4>
+                            <ul>
+                                <li>점심시간</li>
+                                <li>쉬는시간</li>
+                                <li>방과후 시간</li>
+                                <li>긴급상황 시</li>
+                            </ul>
+                        </div>
+                        <div class="phone-prohibited">
+                            <h4>사용 금지 시간</h4>
+                            <ul>
+                                <li>수업 시간</li>
+                                <li>시험 시간</li>
+                                <li>조회/종례 시간</li>
+                                <li>체육 수업 시간</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 시설 이용 -->
+            <div class="rule-section" id="facilities">
+                <h2><i class="fas fa-building"></i> 시설 이용</h2>
+                
+                <div class="rule-card">
+                    <h3>제10조 (교실 이용)</h3>
+                    <ul>
+                        <li>교실 청소 및 정리정돈 철저</li>
+                        <li>전기, 가스 등 안전 관리</li>
+                        <li>교실 비품 소중히 사용</li>
+                        <li>에어컨, 난방 적정 온도 유지</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제11조 (특별실 이용)</h3>
+                    <div class="facility-list">
+                        <div class="facility-item">
+                            <h4><i class="fas fa-flask"></i> 과학실</h4>
+                            <p>실험 안전 수칙 준수, 보호 장비 착용 필수</p>
+                        </div>
+                        <div class="facility-item">
+                            <h4><i class="fas fa-desktop"></i> 컴퓨터실</h4>
+                            <p>개인 계정 사용, 불법 다운로드 금지</p>
+                        </div>
+                        <div class="facility-item">
+                            <h4><i class="fas fa-music"></i> 음악실</h4>
+                            <p>악기 사용 전후 정리, 방음 수칙 준수</p>
+                        </div>
+                        <div class="facility-item">
+                            <h4><i class="fas fa-book"></i> 도서관</h4>
+                            <p>정숙, 도서 대출/반납 규정 준수</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 학습 활동 -->
+            <div class="rule-section" id="academic">
+                <h2><i class="fas fa-book"></i> 학습 활동</h2>
+                
+                <div class="rule-card">
+                    <h3>제12조 (수업 참여)</h3>
+                    <ul>
+                        <li>수업 시간 5분 전 착석</li>
+                        <li>적극적이고 능동적인 수업 참여</li>
+                        <li>과제 및 준비물 성실한 이행</li>
+                        <li>수업 중 이탈 시 교사 허가 필수</li>
+                    </ul>
+                </div>
+                
+                <div class="rule-card">
+                    <h3>제13조 (시험 규정)</h3>
+                    <ul>
+                        <li>시험 시간 10분 전 입실 완료</li>
+                        <li>부정행위 절대 금지</li>
+                        <li>답안지 작성 규정 준수</li>
+                        <li>시험 감독관 지시 사항 준수</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 징계 규정 -->
+            <div class="rule-section" id="disciplinary">
+                <h2><i class="fas fa-gavel"></i> 징계 규정</h2>
+                
+                <div class="rule-card">
+                    <h3>제14조 (징계 종류)</h3>
+                    <div class="disciplinary-levels">
+                        <div class="level level-1">
+                            <h4>1단계: 주의</h4>
+                            <p>경미한 규정 위반 시 구두 주의</p>
+                        </div>
+                        <div class="level level-2">
+                            <h4>2단계: 경고</h4>
+                            <p>재차 위반 시 서면 경고</p>
+                        </div>
+                        <div class="level level-3">
+                            <h4>3단계: 훈계</h4>
+                            <p>학부모 면담 및 생활지도</p>
+                        </div>
+                        <div class="level level-4">
+                            <h4>4단계: 특별지도</h4>
+                            <p>교내 봉사활동 및 상담</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rule-card warning">
+                    <h3>제15조 (중대 위반 사항)</h3>
+                    <ul>
+                        <li>폭력행위 및 집단 괴롭힘</li>
+                        <li>성희롱 및 성폭력</li>
+                        <li>음주, 흡연, 도박</li>
+                        <li>절도 및 기물 파손</li>
+                        <li>사이버 폭력 및 개인정보 유출</li>
+                    </ul>
+                    <p><strong>※ 위 사항 적발 시 즉시 학생선도위원회 회부</strong></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 우리학교. 모든 권리 보유.</p>
+            <p>교칙 관련 문의: student@school.kr | 전화: 02-123-4567</p>
+        </div>
+    </footer>
+
+    <script src="js/rules.js"></script>
+</body>
+</html>

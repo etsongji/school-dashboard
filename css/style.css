@@ -1,0 +1,993 @@
+/* 기본 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+/* 헤더 */
+.header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.logo i {
+    font-size: 2rem;
+}
+
+.school-logo {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+}
+
+/* 네비게이션 */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #4f46e5;
+    background: #f1f5f9;
+}
+
+.nav-link.active {
+    color: #4f46e5;
+    background: #eef2ff;
+}
+
+/* 드롭다운 */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #64748b;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dropdown-btn:hover {
+    color: #4f46e5;
+    background: #f1f5f9;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    min-width: 120px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin: 0.25rem;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+    color: #4f46e5;
+}
+
+/* 공지사항 회전 배너 */
+.notice-banner {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    padding: 0.75rem 0;
+    position: relative;
+    animation: slideDown 0.5s ease-out;
+    display: none; /* 기본적으로 숨김 */
+}
+
+.notice-banner-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.notice-banner-content i {
+    font-size: 1rem;
+}
+
+.notice-close-btn {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.notice-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+
+/* 메인 레이아웃 */
+.main-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: calc(100vh - 140px);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* 컨텐츠 그리드 */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    height: 100%;
+}
+
+/* 왼쪽 컬럼 */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* 일정 섹션 */
+.schedule-section {
+    flex: 1;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-nav-btn {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #667eea;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.date-nav-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64748b;
+    font-weight: 500;
+    padding: 8px 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.date-display:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.date-display i {
+    color: #4f46e5;
+}
+
+.refresh-btn {
+    background: #667eea;
+    border: none;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.refresh-btn:hover {
+    background: #5a6fd8;
+    transform: rotate(180deg);
+}
+
+/* 일정 리스트 */
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.schedule-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.schedule-card:hover {
+    background: #f1f5f9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-icon {
+    background: #4f46e5;
+    color: white;
+    padding: 0.75rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.schedule-content {
+    flex: 1;
+}
+
+.schedule-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.location i {
+    color: #ef4444;
+}
+
+.grade-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.grade-badge.grade-1 {
+    background: #fce7f3;
+    color: #be185d;
+}
+
+.grade-badge.grade-2 {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.grade-badge.grade-3 {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.grade-badge.grade-12 {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.grade-badge.grade-23 {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.grade-badge.all-grade {
+    background: #e7e5e4;
+    color: #57534e;
+}
+
+.time {
+    color: #059669;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* 일정 없음 상태 */
+.no-schedule, .no-weekly-schedule, .calendar-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 2px dashed #e2e8f0;
+    margin: 1rem 0;
+}
+
+.no-schedule-icon {
+    margin-bottom: 1rem;
+}
+
+.no-schedule-icon i {
+    font-size: 3rem;
+    color: #94a3b8;
+}
+
+.calendar-error .no-schedule-icon i {
+    color: #f59e0b;
+}
+
+.no-schedule-content h3 {
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.no-schedule-content p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* 급식 정보 없음 상태 */
+.no-meal-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px dashed #e2e8f0;
+}
+
+.no-meal-icon {
+    margin-bottom: 0.5rem;
+}
+
+.no-meal-icon i {
+    font-size: 2rem;
+    color: #94a3b8;
+}
+
+.no-meal-content h4 {
+    color: #64748b;
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+.no-meal-content p {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* 이주의 주요일정 */
+.weekly-schedule-section {
+    margin-top: 1rem;
+}
+
+.weekly-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.weekly-schedule-item {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 3px solid #10b981;
+    transition: all 0.2s ease;
+}
+
+.weekly-schedule-item:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+}
+
+.week-date {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #059669;
+    min-width: 80px;
+}
+
+.week-event {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* 오른쪽 컬럼 */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* 빠른 메뉴 섹션 */
+.quick-menu-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.quick-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.quick-menu-btn {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 60px;
+    height: 60px;
+}
+
+.quick-menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quick-menu-btn i {
+    font-size: 1.5rem;
+}
+
+/* 빠른 메뉴 버튼 색상 */
+.schedule-btn {
+    border-color: #3b82f6;
+}
+
+.schedule-btn:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+.meal-btn {
+    border-color: #10b981;
+}
+
+.meal-btn:hover {
+    background: #10b981;
+    color: white;
+}
+
+.rules-btn {
+    border-color: #8b5cf6;
+}
+
+.rules-btn:hover {
+    background: #8b5cf6;
+    color: white;
+}
+
+.notice-btn {
+    border-color: #f59e0b;
+}
+
+.notice-btn:hover {
+    background: #f59e0b;
+    color: white;
+}
+
+/* 급식 카드 섹션 */
+.meal-card-section h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.meal-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 컴팩트 급식 탭 */
+.meal-tabs-compact {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.meal-tab-compact {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.meal-tab-compact:hover {
+    border-color: #cbd5e1;
+}
+
+.meal-tab-compact.active {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+}
+
+/* 컴팩트 급식 메뉴 */
+.meal-content-compact {
+    min-height: 120px;
+}
+
+.compact-meal-display {
+    min-height: 100px;
+}
+
+.compact-meal-menu {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.meal-item-compact {
+    background: #f8fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #374151;
+    border-left: 2px solid #10b981;
+    transition: all 0.2s ease;
+}
+
+.meal-item-compact:hover {
+    background: #f1f5f9;
+    transform: translateX(2px);
+}
+
+.meal-more-compact {
+    background: #e2e8f0;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #64748b;
+    text-align: center;
+    font-style: italic;
+}
+
+.meal-loading-compact {
+    text-align: center;
+    padding: 1.5rem;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.meal-loading-compact i {
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+.no-meal-compact {
+    text-align: center;
+    padding: 1.5rem;
+    color: #94a3b8;
+}
+
+.no-meal-compact p {
+    font-size: 0.85rem;
+}
+
+/* 스케줄 로딩 */
+.schedule-loading, .weekly-loading {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+}
+
+.schedule-loading i, .weekly-loading i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #4f46e5;
+    animation: spin 1s linear infinite;
+}
+
+.schedule-loading span, .weekly-loading span {
+    display: block;
+    font-size: 0.9rem;
+}
+
+/* 푸터 */
+.footer {
+    background: #1e293b;
+    color: #94a3b8;
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-content p {
+    margin-bottom: 0.5rem;
+}
+
+/* 스크롤바 스타일 */
+.schedule-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.schedule-list::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.schedule-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.schedule-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .main-layout {
+        padding: 1.5rem;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr 280px;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .right-column {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .notice-banner-content {
+        padding: 0 3rem 0 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .notice-close-btn {
+        right: 10px;
+    }
+    
+    .main-layout {
+        padding: 1rem;
+    }
+    
+    .main-content {
+        padding: 1.5rem;
+    }
+    
+    .schedule-card {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .schedule-details {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .quick-menu-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .quick-menu-btn {
+        width: 50px;
+        height: 50px;
+        padding: 0.75rem;
+    }
+    
+    .quick-menu-btn i {
+        font-size: 1.25rem;
+    }
+    
+    .weekly-schedule-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .week-date {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-layout {
+        padding: 0.75rem;
+    }
+    
+    .main-content {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+    
+    .schedule-list {
+        max-height: 400px;
+    }
+    
+    .schedule-card {
+        padding: 0.75rem;
+    }
+    
+    .quick-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .quick-menu-btn {
+        width: 45px;
+        height: 45px;
+        padding: 0.5rem;
+    }
+    
+    .quick-menu-btn i {
+        font-size: 1.1rem;
+    }
+    
+    .meal-card {
+        padding: 0.75rem;
+    }
+    
+    .weekly-schedule-item {
+        padding: 0.75rem;
+    }
+}
+
+/* 애니메이션 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 로딩 애니메이션 */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+
+/* 포커스 상태 */
+.quick-menu-btn:focus,
+.meal-tab:focus,
+.dropdown-btn:focus {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

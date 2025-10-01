@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학사일정 - 학교 대시보드</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .calendar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .calendar-header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .calendar-header p {
+            color: #666;
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+        }
+        
+        .calendar-embed {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .back-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .calendar-container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .calendar-header h1 {
+                font-size: 2rem;
+            }
+            
+            .calendar-embed {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calendar-container">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                대시보드로 돌아가기
+            </a>
+            
+            <div class="calendar-header">
+                <h1><i class="fas fa-calendar-alt"></i> 학사일정</h1>
+                <p>학교의 모든 중요한 일정을 확인하세요</p>
+            </div>
+            
+            <iframe 
+                class="calendar-embed"
+                src="https://calendar.google.com/calendar/embed?src=36ba3c711fc38c700924941125d4c03392c69e553db7e596977f241d65465dc6%40group.calendar.google.com&ctz=Asia%2FSeoul&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&mode=MONTH&height=600&wkst=1&bgcolor=%23ffffff"
+                frameborder="0"
+                scrolling="no">
+            </iframe>
+        </div>
+    </div>
+</body>
+</html>
