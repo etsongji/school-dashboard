@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 관리 - 충주고등학교</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .notices-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .notices-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .notices-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notices-title h1 {
+            color: #333;
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .add-notice-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-notice-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .notices-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .notice-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+        
+        .notice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .notice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .notice-title {
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .notice-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .edit-btn {
+            color: #667eea;
+        }
+        
+        .edit-btn:hover {
+            background: #f0f2ff;
+        }
+        
+        .delete-btn {
+            color: #ef4444;
+        }
+        
+        .delete-btn:hover {
+            background: #fef2f2;
+        }
+        
+        .notice-content {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .notice-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #999;
+            font-size: 0.9rem;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+        }
+        
+        .notice-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .notice-priority {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .priority-medium {
+            background: #fffbeb;
+            color: #d97706;
+        }
+        
+        .priority-low {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .back-button:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+        
+        .empty-state h3 {
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .notices-container {
+                padding: 10px;
+            }
+            
+            .notices-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .notice-card {
+                padding: 20px;
+            }
+            
+            .notice-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .notice-actions {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="notices-container">
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            대시보드로 돌아가기
+        </a>
+        
+        <div class="notices-header">
+            <div class="notices-title">
+                <i class="fas fa-bullhorn" style="color: #667eea; font-size: 2rem;"></i>
+                <h1>공지사항 관리</h1>
+            </div>
+            <button class="add-notice-btn" onclick="openAddModal()">
+                <i class="fas fa-plus"></i>
+                새 공지사항 작성
+            </button>
+        </div>
+        
+        <div class="notices-grid" id="noticesGrid">
+            <!-- 공지사항들이 여기에 동적으로 로드됩니다 -->
+        </div>
+    </div>
+    
+    <!-- 공지사항 추가/수정 모달 -->
+    <div class="modal" id="noticeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">새 공지사항 작성</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="noticeForm">
+                <div class="form-group">
+                    <label class="form-label" for="noticeTitle">제목</label>
+                    <input type="text" id="noticeTitle" class="form-input" placeholder="공지사항 제목을 입력하세요" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="noticeContent">내용</label>
+                    <textarea id="noticeContent" class="form-textarea" placeholder="공지사항 내용을 입력하세요" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="noticePriority">우선순위</label>
+                    <select id="noticePriority" class="form-select">
+                        <option value="low">낮음</option>
+                        <option value="medium" selected>보통</option>
+                        <option value="high">높음</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="displayStartDate">노출 시작일</label>
+                    <input type="date" id="displayStartDate" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="displayEndDate">노출 종료일</label>
+                    <input type="date" id="displayEndDate" class="form-input" required>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                    <button type="submit" class="btn btn-primary">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 공지사항 데이터 (로컬 스토리지에 저장)
+        let notices = JSON.parse(localStorage.getItem('schoolNotices')) || [
+            {
+                id: 1,
+                title: "2024년 2학기 기말고사 일정 안내",
+                content: "2024년 2학기 기말고사가 12월 16일(월)부터 12월 20일(금)까지 실시됩니다. 시험 범위 및 세부 일정은 각 과목 담당 선생님께 문의하시기 바랍니다.",
+                priority: "high",
+                date: "2024-12-10",
+                author: "교무부",
+                displayStartDate: "2024-12-10",
+                displayEndDate: "2024-12-20"
+            },
+            {
+                id: 2,
+                title: "독감 예방접종 신청 안내",
+                content: "독감 예방접종을 희망하는 학생은 12월 15일까지 보건실에서 신청하시기 바랍니다. 접종은 12월 18일(수) 오후에 실시됩니다.",
+                priority: "medium",
+                date: "2024-12-08",
+                author: "보건실",
+                displayStartDate: "2024-12-08",
+                displayEndDate: "2024-12-18"
+            },
+            {
+                id: 3,
+                title: "겨울방학 중 학교시설 이용 안내",
+                content: "겨울방학 기간 중 학교 시설 이용 시간은 평일 오전 9시부터 오후 5시까지입니다. 주말 및 공휴일은 이용이 제한됩니다.",
+                priority: "low",
+                date: "2024-12-05",
+                author: "관리부",
+                displayStartDate: "2025-12-20",
+                displayEndDate: "2025-03-01"
+            }
+        ];
+        
+        let editingId = null;
+        
+        // 페이지 로드 시 공지사항 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            displayNotices();
+        });
+        
+        // 공지사항 표시
+        function displayNotices() {
+            const grid = document.getElementById('noticesGrid');
+            
+            if (notices.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bullhorn"></i>
+                        <h3>등록된 공지사항이 없습니다</h3>
+                        <p>새 공지사항을 작성해보세요.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 우선순위와 날짜 순으로 정렬
+            const sortedNotices = notices.sort((a, b) => {
+                const priorityOrder = { high: 3, medium: 2, low: 1 };
+                if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                }
+                return new Date(b.date) - new Date(a.date);
+            });
+            
+            const noticesHTML = sortedNotices.map(notice => `
+                <div class="notice-card">
+                    <div class="notice-header">
+                        <h3 class="notice-title">${notice.title}</h3>
+                        <div class="notice-actions">
+                            <button class="action-btn edit-btn" onclick="editNotice(${notice.id})" title="수정">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteNotice(${notice.id})" title="삭제">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="notice-content">${notice.content}</div>
+                    <div class="notice-meta">
+                        <div class="notice-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            ${formatDate(notice.date)} | ${notice.author}
+                        </div>
+                        <div class="notice-priority priority-${notice.priority}">
+                            ${getPriorityText(notice.priority)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            grid.innerHTML = noticesHTML;
+        }
+        
+        // 날짜 포맷팅
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        
+        // 우선순위 텍스트
+        function getPriorityText(priority) {
+            const priorityMap = {
+                high: '긴급',
+                medium: '보통',
+                low: '일반'
+            };
+            return priorityMap[priority] || '보통';
+        }
+        
+        // 새 공지사항 모달 열기
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = '새 공지사항 작성';
+            document.getElementById('noticeForm').reset();
+            document.getElementById('noticeModal').style.display = 'flex';
+        }
+        
+        // 공지사항 수정 모달 열기
+        function editNotice(id) {
+            const notice = notices.find(n => n.id === id);
+            if (!notice) return;
+            
+            editingId = id;
+            document.getElementById('modalTitle').textContent = '공지사항 수정';
+            document.getElementById('noticeTitle').value = notice.title;
+            document.getElementById('noticeContent').value = notice.content;
+            document.getElementById('noticePriority').value = notice.priority;
+            document.getElementById('displayStartDate').value = notice.displayStartDate || '';
+            document.getElementById('displayEndDate').value = notice.displayEndDate || '';
+            document.getElementById('noticeModal').style.display = 'flex';
+        }
+        
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('noticeModal').style.display = 'none';
+            editingId = null;
+        }
+        
+        // 공지사항 삭제
+        function deleteNotice(id) {
+            if (confirm('이 공지사항을 삭제하시겠습니까?')) {
+                notices = notices.filter(notice => notice.id !== id);
+                localStorage.setItem('schoolNotices', JSON.stringify(notices));
+                displayNotices();
+            }
+        }
+        
+        // 공지사항 저장
+        document.getElementById('noticeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('noticeTitle').value.trim();
+            const content = document.getElementById('noticeContent').value.trim();
+            const priority = document.getElementById('noticePriority').value;
+            const displayStartDate = document.getElementById('displayStartDate').value;
+            const displayEndDate = document.getElementById('displayEndDate').value;
+            
+            if (!title || !content || !displayStartDate || !displayEndDate) {
+                alert('모든 필드를 입력해주세요.');
+                return;
+            }
+            
+            if (new Date(displayStartDate) > new Date(displayEndDate)) {
+                alert('노출 시작일이 종료일보다 늦을 수 없습니다.');
+                return;
+            }
+            
+            const noticeData = {
+                title,
+                content,
+                priority,
+                date: new Date().toISOString().split('T')[0],
+                author: '관리자',
+                displayStartDate,
+                displayEndDate
+            };
+            
+            if (editingId) {
+                // 수정
+                const index = notices.findIndex(n => n.id === editingId);
+                if (index !== -1) {
+                    notices[index] = { ...notices[index], ...noticeData };
+                }
+            } else {
+                // 새 공지사항 추가
+                const newId = Math.max(...notices.map(n => n.id), 0) + 1;
+                notices.push({ id: newId, ...noticeData });
+            }
+            
+            localStorage.setItem('schoolNotices', JSON.stringify(notices));
+            displayNotices();
+            closeModal();
+        });
+        
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('noticeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
