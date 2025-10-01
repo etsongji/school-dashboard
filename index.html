@@ -93,7 +93,7 @@
                         <div class="schedule-list">
                             <div class="schedule-loading">
                                 <i class="fas fa-spinner fa-spin"></i>
-                                <span>학사일정을 불러오는 중...</span>
+                                <span id="scheduleLoadingText">학사일정을 불러오는 중...</span>
                             </div>
                         </div>
                     </section>
@@ -247,16 +247,33 @@
                 this.events = [];
                 this.debugMode = false; // 디버그 모드 비활성화
                 this.selectedDate = new Date(); // 선택된 날짜
+                this.cacheKey = 'calendar_data_cache';
+                this.cacheTimeout = 30 * 60 * 1000; // 30분 캐시
                 this.init();
             }
 
             init() {
                 this.updateSelectedDateDisplay();
-                this.loadCalendarData();
+                // 즉시 로딩 시작 (DOM이 준비되지 않더라도)
+                setTimeout(() => this.loadCalendarData(), 0);
             }
 
             async loadCalendarData() {
                 console.log('🔄 캘린더 데이터 로딩 시작...');
+                
+                // 캐시 확인
+                const cachedData = this.getCachedData();
+                if (cachedData) {
+                    console.log('📋 캐시된 데이터 사용');
+                    this.updateLoadingText('캐시된 데이터 로딩...');
+                    this.events = cachedData;
+                    this.updateScheduleDisplay();
+                    this.updateWeeklyScheduleDisplay();
+                    return;
+                }
+                
+                this.updateLoadingText('구글 캘린더에서 데이터 가져오는 중...');
+                
                 try {
                     const data = await this.fetchCalendarData();
                     console.log('📥 ICS 데이터 수신:', data ? `${data.length}자` : 'null');
@@ -274,6 +291,9 @@
                     if (this.events.length > 0) {
                         console.log('📋 첫 번째 이벤트:', this.events[0]);
                         console.log('📋 모든 이벤트 제목:', this.events.map(e => e.summary));
+                        
+                        // 캐시에 저장
+                        this.setCachedData(this.events);
                     }
                     
                     this.updateScheduleDisplay();
@@ -631,6 +651,55 @@
                 this.selectedDate = new Date(dateString);
                 this.updateSelectedDateDisplay();
                 this.updateScheduleDisplay();
+            }
+
+            // 캐시 데이터 가져오기
+            getCachedData() {
+                try {
+                    const cached = localStorage.getItem(this.cacheKey);
+                    if (!cached) return null;
+
+                    const { data, timestamp } = JSON.parse(cached);
+                    const now = new Date().getTime();
+
+                    // 캐시 만료 확인
+                    if (now - timestamp > this.cacheTimeout) {
+                        localStorage.removeItem(this.cacheKey);
+                        return null;
+                    }
+
+                    // 이벤트 객체의 날짜 복원
+                    return data.map(event => ({
+                        ...event,
+                        dtstart: new Date(event.dtstart),
+                        dtend: new Date(event.dtend)
+                    }));
+                } catch (error) {
+                    console.warn('캐시 읽기 오류:', error);
+                    return null;
+                }
+            }
+
+            // 캐시 데이터 저장
+            setCachedData(events) {
+                try {
+                    const cacheData = {
+                        data: events,
+                        timestamp: new Date().getTime()
+                    };
+                    localStorage.setItem(this.cacheKey, JSON.stringify(cacheData));
+                    console.log('📝 캐시에 저장됨');
+                } catch (error) {
+                    console.warn('캐시 저장 오류:', error);
+                }
+            }
+
+            // 로딩 텍스트 업데이트
+            updateLoadingText(text) {
+                const loadingElement = document.getElementById('scheduleLoadingText');
+                if (loadingElement) {
+                    loadingElement.textContent = text;
+                }
             }
         }
 
