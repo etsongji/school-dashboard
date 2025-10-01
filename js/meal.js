@@ -692,7 +692,7 @@ async function preloadWeeklyMeals() {
         // 캐시에 저장 (localStorage 등 활용)
         localStorage.setItem('weeklyMeals', JSON.stringify(weeklyMeals));
     } catch (error) {
-        console.error('주간 급식 정보 로드 실패:', error);
+        console.warn('⚠️ 급식 API 접근 제한 (CORS):', error.message);
     }
 }
 

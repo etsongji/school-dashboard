@@ -43,8 +43,8 @@ function initGoogleCalendarClient() {
         console.log('Google Calendar API 초기화 완료');
         loadGoogleCalendar();
     }).catch(function(error) {
-        console.error('Google Calendar API 초기화 실패:', error);
-        showCalendarError('Google Calendar 초기화에 실패했습니다.');
+        console.warn('⚠️ Google Calendar API 초기화 실패 (API 키 필요):', error);
+        // API 키가 없어도 기본 기능은 작동하도록 무시
     });
 }
 
