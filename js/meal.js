@@ -673,6 +673,12 @@ function refreshMealInfo() {
 
 // 주간 급식 정보 미리 로드
 async function preloadWeeklyMeals() {
+    // 개발 환경이 아니면 급식 API 호출 스킵 (CORS 문제)
+    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        console.log('📊 급식 정보: CORS 제한으로 인해 스킵됨');
+        return;
+    }
+    
     const today = new Date();
     const promises = [];
     

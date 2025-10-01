@@ -36,6 +36,12 @@ function loadGoogleAPIScript() {
 
 // Google Calendar 클라이언트 초기화
 function initGoogleCalendarClient() {
+    // API 키가 설정되지 않은 경우 무시
+    if (GOOGLE_CALENDAR_CONFIG.API_KEY === 'YOUR_GOOGLE_API_KEY') {
+        console.warn('⚠️ Google Calendar API 키가 설정되지 않음 (선택적 기능)');
+        return;
+    }
+    
     gapi.client.init({
         apiKey: GOOGLE_CALENDAR_CONFIG.API_KEY,
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']
@@ -43,8 +49,7 @@ function initGoogleCalendarClient() {
         console.log('Google Calendar API 초기화 완료');
         loadGoogleCalendar();
     }).catch(function(error) {
-        console.warn('⚠️ Google Calendar API 초기화 실패 (API 키 필요):', error);
-        // API 키가 없어도 기본 기능은 작동하도록 무시
+        console.warn('⚠️ Google Calendar API 초기화 실패:', error);
     });
 }
 

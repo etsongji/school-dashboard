@@ -202,7 +202,10 @@
             const today = new Date();
             const options = { month: 'long', day: 'numeric', weekday: 'short' };
             const dateString = today.toLocaleDateString('ko-KR', options);
-            document.getElementById('todayDate').textContent = dateString;
+            const todayElement = document.getElementById('todayDate');
+            if (todayElement) {
+                todayElement.textContent = dateString;
+            }
         }
 
         // 드롭다운 초기화
