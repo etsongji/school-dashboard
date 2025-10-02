@@ -776,9 +776,11 @@ function loadMealInfo() {
 
 // 페이지 로드 시 주간 급식 정보 미리 로드
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        preloadWeeklyMeals();
-    }, 2000);
+    // 프로덕션에서는 급식 API 호출하지 않음 (CORS 문제)
+    console.log('📊 급식 정보: CORS 제한으로 인해 API 호출 비활성화');
+    // setTimeout(() => {
+    //     preloadWeeklyMeals();
+    // }, 2000);
 });
 
 // CSS 스타일 추가

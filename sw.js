@@ -1,5 +1,5 @@
 // Service Worker - PWA 지원
-const CACHE_NAME = 'school-dashboard-v1.0.0';
+const CACHE_NAME = 'school-dashboard-v1.1.0';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -27,6 +27,13 @@ self.addEventListener('install', function(event) {
 
 // fetch 이벤트
 self.addEventListener('fetch', function(event) {
+  // NEIS API나 Google API 요청은 캐시하지 않음
+  if (event.request.url.includes('open.neis.go.kr') || 
+      event.request.url.includes('googleapis.com') ||
+      event.request.url.includes('content.googleapis.com')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
@@ -34,7 +41,10 @@ self.addEventListener('fetch', function(event) {
         if (response) {
           return response;
         }
-        return fetch(event.request);
+        return fetch(event.request).catch(function() {
+          // 네트워크 실패시 캐시된 인덱스 페이지 반환
+          return caches.match('/');
+        });
       }
     )
   );
