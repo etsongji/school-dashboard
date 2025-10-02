@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://api.allorigins.win">
     <link rel="preconnect" href="https://calendar.google.com">
+    <!-- 폰트 preload로 더 빠른 로딩 -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/notosanskr/v38/PbykFmXiEBPT4ITbgNA5CgmG0X7t.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- PWA Manifest -->
@@ -1014,6 +1016,26 @@
             if (window.googleCalendar && dateString) {
                 window.googleCalendar.setDate(dateString);
             }
+        }
+    </script>
+
+    <!-- 폰트 로딩 최적화 -->
+    <script>
+        // 폰트 로딩 상태 관리
+        document.documentElement.classList.add('font-loading');
+        
+        // 폰트 로딩 감지
+        if ('fonts' in document) {
+            document.fonts.ready.then(() => {
+                document.documentElement.classList.remove('font-loading');
+                document.documentElement.classList.add('font-loaded');
+            });
+        } else {
+            // 폰트 API를 지원하지 않는 브라우저용 폴백
+            setTimeout(() => {
+                document.documentElement.classList.remove('font-loading');
+                document.documentElement.classList.add('font-loaded');
+            }, 3000);
         }
     </script>
 
