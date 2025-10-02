@@ -168,26 +168,50 @@ function loadMealInfo() {
 // 공지사항 로드 및 회전 표시
 async function loadNotices() {
     try {
-        console.log('🔄 CMS에서 공지사항 로딩 시작...');
+        console.log('🔄 공지사항 로딩 시작...');
         
-        // CMS에서 공지사항 로드
-        let allNotices = [];
-        if (window.cmsLoader) {
+        // 로컬스토리지 우선 확인 (공지사항 관리 페이지에서 등록한 내용)
+        let allNotices = JSON.parse(localStorage.getItem('schoolNotices')) || [];
+        console.log('📥 로컬스토리지에서 로드된 공지사항:', allNotices.length, '개');
+        
+        // 로컬스토리지에 없으면 CMS에서 로드
+        if (allNotices.length === 0 && window.cmsLoader) {
+            console.log('📋 로컬스토리지가 비어있음, CMS에서 로드 시도');
             allNotices = await window.cmsLoader.loadNotices();
             console.log('📥 CMS에서 로드된 공지사항:', allNotices.length, '개');
         }
         
-        // CMS 로드 실패시 로컬스토리지 백업 사용
+        // 그래도 없으면 CMS 기본 파일을 로컬스토리지로 복사
         if (allNotices.length === 0) {
-            console.log('⚠️ CMS 로드 실패, 로컬스토리지 사용');
-            allNotices = JSON.parse(localStorage.getItem('schoolNotices')) || [];
-        }
-        
-        // 그래도 없으면 기본 공지사항 생성
-        if (allNotices.length === 0) {
-            console.log('📝 기본 공지사항 생성');
+            console.log('📝 CMS 기본 공지사항을 로컬스토리지로 복사');
             allNotices = window.cmsLoader ? window.cmsLoader.getDefaultNotices() : getDefaultNotices();
-            localStorage.setItem('schoolNotices', JSON.stringify(allNotices));
+            
+            // CMS 파일의 내용을 로컬스토리지 형식으로 변환
+            const cmsNotices = [
+                {
+                    id: 1,
+                    title: "충주고등학교 학교 대시보드에 오신 것을 환영합니다!",
+                    content: "학사일정, 급식정보, 공지사항을 한눈에 확인하세요.",
+                    priority: "high",
+                    date: "2025-10-02",
+                    author: "관리자",
+                    displayStartDate: "2025-10-01",
+                    displayEndDate: "2025-12-31"
+                },
+                {
+                    id: 2,
+                    title: "학사일정은 구글캘린더와 실시간 연동됩니다",
+                    content: "구글캘린더에 등록된 일정이 자동으로 표시됩니다.",
+                    priority: "medium",
+                    date: "2025-10-02",
+                    author: "시스템",
+                    displayStartDate: "2025-10-01",
+                    displayEndDate: "2025-12-31"
+                }
+            ];
+            
+            localStorage.setItem('schoolNotices', JSON.stringify(cmsNotices));
+            allNotices = cmsNotices;
         }
         
         console.log('📋 전체 공지사항:', allNotices);
