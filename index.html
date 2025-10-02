@@ -199,16 +199,16 @@
             window.googleCalendar = new GoogleCalendarSchedule();
         });
 
-        // 오늘 날짜 업데이트
-        function updateTodayDate() {
-            const today = new Date();
-            const options = { month: 'long', day: 'numeric', weekday: 'short' };
-            const dateString = today.toLocaleDateString('ko-KR', options);
-            const todayElement = document.getElementById('todayDate');
-            if (todayElement) {
-                todayElement.textContent = dateString;
-            }
-        }
+        // 오늘 날짜 업데이트 함수 제거됨 (todayDate 요소가 존재하지 않음)
+        // function updateTodayDate() {
+        //     const today = new Date();
+        //     const options = { month: 'long', day: 'numeric', weekday: 'short' };
+        //     const dateString = today.toLocaleDateString('ko-KR', options);
+        //     const todayElement = document.getElementById('todayDate');
+        //     if (todayElement) {
+        //         todayElement.textContent = dateString;
+        //     }
+        // }
 
         // 드롭다운 초기화
         function initDropdown() {
@@ -1018,6 +1018,27 @@
             if (window.googleCalendar && dateString) {
                 window.googleCalendar.setDate(dateString);
             }
+        }
+    </script>
+
+    <!-- 캐시 무효화 -->
+    <script>
+        // Service Worker 캐시 강제 무효화
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        
+        // 브라우저 캐시 무효화
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                names.forEach(function(name) {
+                    caches.delete(name);
+                });
+            });
         }
     </script>
 

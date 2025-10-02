@@ -1,5 +1,5 @@
 // Service Worker - PWA 지원
-const CACHE_NAME = 'school-dashboard-v2.0.0';
+const CACHE_NAME = 'school-dashboard-v2.1.0';
 const urlsToCache = [
   '/',
   '/index.html',
