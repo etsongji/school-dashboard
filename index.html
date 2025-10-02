@@ -183,8 +183,8 @@
 
         // DOM 로드 완료 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
-            // 현재 날짜 표시
-            updateTodayDate();
+            // 현재 날짜 표시 (todayDate 요소가 없으므로 제거)
+            // updateTodayDate();
             
             // 드롭다운 기능 초기화
             initDropdown();
@@ -192,8 +192,8 @@
             // 급식 탭 기능 초기화
             initMealTabs();
             
-            // 컴팩트 급식 카드 초기화
-            compactMealCard = new CompactMealCard();
+            // 컴팩트 급식 카드 초기화 (CORS 문제로 비활성화)
+            // compactMealCard = new CompactMealCard();
             
             // Google Calendar 초기화
             window.googleCalendar = new GoogleCalendarSchedule();
@@ -796,7 +796,8 @@
             }
         }
 
-        // 컴팩트 급식 카드 클래스
+        // 컴팩트 급식 카드 클래스 (CORS 문제로 비활성화)
+        /*
         class CompactMealCard {
             constructor() {
                 this.apiKey = 'cc1b9c0a34804a628cc701f43a8398e1';
@@ -994,6 +995,7 @@
                 return mealTypes[code] || '중식';
             }
         }
+        */
 
         // 전역 함수들 - HTML에서 호출됨
         function changeScheduleDate(direction) {
